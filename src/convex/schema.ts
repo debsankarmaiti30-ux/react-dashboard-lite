@@ -32,12 +32,28 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // add other tables here
+    // File management tables
+    files: defineTable({
+      name: v.string(),
+      size: v.number(),
+      type: v.string(),
+      storageId: v.id("_storage"),
+      uploadedBy: v.id("users"),
+      isPublic: v.optional(v.boolean()),
+      tags: v.optional(v.array(v.string())),
+      description: v.optional(v.string()),
+    })
+      .index("by_user", ["uploadedBy"])
+      .index("by_public", ["isPublic"]),
 
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    contributions: defineTable({
+      fileId: v.id("files"),
+      contributorId: v.id("users"),
+      type: v.union(v.literal("upload"), v.literal("share"), v.literal("comment")),
+      message: v.optional(v.string()),
+    })
+      .index("by_file", ["fileId"])
+      .index("by_contributor", ["contributorId"]),
   },
   {
     schemaValidation: false,
