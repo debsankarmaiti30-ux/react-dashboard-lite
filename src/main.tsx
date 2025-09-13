@@ -1,6 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
-import { InstrumentationProvider } from "@/instrumentation.tsx";
+import { InstrumentationProvider } from "./instrumentation";
 import AuthPage from "@/pages/Auth.tsx";
 import DashboardPage from "@/pages/DashboardPage.tsx";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
@@ -13,7 +13,7 @@ import Landing from "./pages/Landing.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import "./types/global.d.ts";
 
-const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
+const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL || "https://placeholder.convex.cloud");
 
 function RouteSyncer() {
   const location = useLocation();
